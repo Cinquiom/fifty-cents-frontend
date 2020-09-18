@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <td>
+    <ul class="deck">
+        {% for x in range(10) %}
+        <li>
+            <div class="card back">*</div>
+        </li>
+        {% endfor %}
+    </ul>
+    </td>
+    <td></td><td></td><td></td><td></td><td></td>
+    <td>
+        <ul class="hand">
+        {% for card in pile %}
+        <li>
+		   <div class="card rank-{{card.lower()}} {{card.lower()}} spades">
+		   	<span class="rank">{{card if card != "JOKER" else ""}}</span>
+		   	<span class="suit">&spades;</span>
+		   </div>
+        </li>
+        {% endfor %}
+    </ul>
+    </td>
+  </tr>
+</table>

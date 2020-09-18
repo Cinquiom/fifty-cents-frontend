@@ -1,0 +1,71 @@
+<html>
+{% include "head.html" %}
+<body class="playingCards fourColours rotateHand">
+
+<div>
+<h1>Fifty Cents</h1>
+</div>
+
+<form action="/" method="get">
+	<button name="refresh" value="1">Refresh</button>
+</form>
+
+{% include "deck.html" %}
+
+<div>
+Current goal: Get {{goal["set_num"]}} set{{"s" if goal["set_num"] != 1 else ""}} of {{goal["set_size"]}}
+</div>
+<div>
+Playable cards: {% for c in playable %}{{c}} {% endfor %}
+</div>
+
+<div>
+<h3>Your hand</h3>
+</div>
+
+<p>
+Coins: {{player["coins"]}}<br/>
+Player points: {{player["points"]}}<br/>
+CPU points: {{ai_total}}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <br/>
+    {% for message in messages %}
+{{ message }}<br/>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</p>
+
+{% if game_over %}
+<p>
+<h2>Game over!</h2>
+Player has {{player_score}} points<br/>
+Computer has {{ai_score}} points<br/>
+{% if player_score > ai_score %}
+Player wins!</p>
+{% elif player_score < ai_score %}
+Computer wins!</p>
+{% else %}
+Tie!</p>
+{% endif %}
+
+{% else %}
+<form action="/" method="post">
+
+  {% if not player_has_drawn %}
+  <button name="action" value="draw">Draw</button>
+  <button {{"disabled" if player["coins"] == 0 else ""}} name="action" value="buy">Buy</button>
+  <input type="number" name="buyamount" value="0" min="0" max="{{player["coins"]}}"></input>
+  {% else %}
+  <button name="action" value="play">Play</button>
+  <button name="action" value="toss">Toss</button>
+  {% endif %}
+  <p></p>
+{% endif %}
+{% include "player_hand.html" %}
+
+</form>
+
+</body>
+</html>
